@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'usuarios'
 ]
 
@@ -77,8 +79,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "django_restaurante",  #nombre de la base de datso
+        "USER": "root",
+        "PASSWORD": "root",
+        "HOST": "127.0.0.1",
+        "PORT": "3306",
     }
 }
 
@@ -125,3 +131,19 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'usuarios.User'
+
+
+# sirve para modificar la configuracion de nuestro proyecto usando DRF
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+
+}
+# modificar la configuracion de la libreria de las JWT
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1, minutes=10, seconds=5)
+}
